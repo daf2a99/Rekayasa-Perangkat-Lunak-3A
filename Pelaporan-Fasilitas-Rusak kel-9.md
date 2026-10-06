@@ -1,83 +1,60 @@
 Nama Anggota Kelompok 9:
+- Daffa Haqurrizqo Rabbany (1251420091)
+- Naufal Fadhlan (1251420002)
+- Ananda Ahmad Firjatullah (1251420048)
+- Helmi Yahya Prasetyo (1251420085)
 
-\- Daffa Haqurrizqo Rabbany (1251420091)
+# Sistem Pelaporan Fasilitas Rusak
 
-\- Naufal Fadhlan (1251420002)
+## 1. Layanan yang Dipilih
+Layanan yang dipilih adalah Sistem Pelaporan Fasilitas Rusak. Sistem ini dirancang untuk memfasilitasi proses pelaporan kerusakan di lingkungan FST UIN Syarif Hidayatullah Jakarta, mulai dari pengajuan praktis (tanpa login), pencarian riwayat, verifikasi oleh staf, pembaruan status pengerjaan, hingga rekapitulasi data pimpinan.
 
-\- Ananda Ahmad Firjatullah (1251420048)
+## 2. Fitur Unggulan
+Fitur unggulan yang diusulkan adalah **Automated Photo Compression**, yaitu fitur pengelolaan media yang memproses ukuran dan kualitas file foto bukti kerusakan secara otomatis di latar belakang (*background process*) sebelum disimpan ke dalam server.
 
-\- Helmi Yahya Prasetyo (1251420085)
+Pihak yang terlibat meliputi mahasiswa/dosen sebagai pelapor (yang mengunggah foto), sistem modul media (sebagai pemroses kompresi), dan Staf Sarpras (yang memverifikasi laporan dengan waktu muat gambar yang cepat). Setiap pihak memiliki interaksi yang berbeda terhadap fitur ini.
 
-\# Pelaporan Fasilitas Rusak
+Dengan adanya fitur ini, kapasitas penyimpanan server dapat dihemat secara signifikan, dan waktu muat (*loading*) halaman daftar laporan di dasbor pengelola menjadi lebih cepat tanpa mengurangi detail visual kerusakan yang dilaporkan.
 
-\## 1. Layanan yang Dipilih
+## 3. Analisis Kebutuhan
+1. Sebagai mahasiswa/dosen, saya membutuhkan fasilitas pengajuan laporan kerusakan beserta unggah foto secara online tanpa harus login, agar saya dapat melaporkan masalah dengan cepat.
+2. Sebagai mahasiswa/dosen, saya membutuhkan fitur pencarian status menggunakan NIM/Kode Unik, agar saya dapat mengetahui perkembangan laporan tanpa harus membuat akun.
+3. Sebagai Staff Sarpras, saya membutuhkan data laporan dan foto kerusakan yang terorganisir, agar proses verifikasi dan penugasan teknisi dapat dilakukan dengan mudah dan terkontrol.
+4. Sebagai Staff Sarpras, saya membutuhkan sistem yang dapat meminimalkan ukuran file foto secara otomatis, agar server fakultas tidak cepat penuh meskipun intensitas laporan tinggi.
+5. Sebagai Dekanat/Kaprodi, saya membutuhkan dasbor analitik rekapitulasi, agar saya dapat mengevaluasi tingkat kerusakan fasilitas dan kecepatan penanganan.
 
-Layanan yang dipilih adalah Pelaporan Fasilitas Rusak. Sistem ini dirancang untuk membantu proses pelaporan kerusakan fasilitas di lingkungan FST UIN Syarif Hidayatullah Jakarta mulai dari pengajuan laporan, verifikasi, penugasan teknisi, pelaksanaan perbaikan, hingga penilaian dan pemantauan status secara transparan.
+## 4. Arsitektur dan Modul Sistem
+Arsitektur sistem dirancang menggunakan pendekatan MVC (Model-View-Controller) berbasis web. Untuk memastikan prinsip tanggung jawab yang jelas (*High Cohesion*), sistem dibagi menjadi beberapa modul:
+- **Modul Pengajuan:** Mengelola input form pelaporan publik dan pencarian riwayat status.
+- **Modul Media (Kompresi):** Mengelola validasi, pemrosesan (*resize* & *compress*), dan penyimpanan file foto.
+- **Modul Verifikasi:** Mengelola perubahan status laporan oleh Staff Sarpras.
+- **Modul Analitik:** Mengelola data agregasi untuk dasbor pimpinan.
 
-\## 2. Fitur Unggulan
+Gambar arsitektur sistem beserta label hubungan antarkomponen akan dilampirkan secara terpisah pada file architecture.png.
 
-Fitur unggulan yang diusulkan adalah Automated Photo Compression (Kompresi Foto Otomatis), yaitu fitur non-fungsional yang secara otomatis mengompresi ukuran file foto bukti kerusakan fasilitas yang diunggah oleh mahasiswa atau dosen di latar belakang server.
+## 5. Alur Fitur Unggulan
+Fitur kompresi otomatis ini menghubungkan proses pengajuan laporan dengan penyimpanan server. Alur dimulai ketika pelapor mengisi formulir kerusakan dan melampirkan file foto bukti.
 
-Pihak yang terlibat meliputi mahasiswa/dosen sebagai pelapor, staf sarana dan prasarana (sarpras) sebagai verifikator dan pengelola penugasan, serta teknisi lapangan sebagai eksekutor perbaikan. Setiap pihak memiliki hak akses dan fungsi yang berbeda sesuai dengan perannya.
+Modul media kemudian melakukan validasi awal. **(Kondisi Gagal):** Jika file yang diunggah bukan format gambar (misal: PDF/DOCX) atau ukurannya melebihi 10MB, sistem akan menolak proses dan menampilkan pesan error di layar pelapor untuk meminta file yang sesuai.
 
-Dengan adanya fitur kompresi foto otomatis ini, kapasitas penyimpanan server dapat dihemat secara optimal dan waktu muat (loading) halaman laporan menjadi lebih cepat, tanpa mengurangi kejelasan visual atau detail gambar kerusakan yang dikirimkan.
-
-\## 3. Analisis Kebutuhan
-
-1\. Sebagai mahasiswa atau dosen, saya membutuhkan fasilitas pengajuan laporan kerusakan fasilitas beserta unggah foto bukti secara online, agar saya tidak perlu datang langsung atau menggunakan media yang terpisah.
-
-2\. Sebagai mahasiswa atau dosen, saya membutuhkan informasi status pengajuan laporan, agar saya dapat mengetahui perkembangan perbaikan fasilitas tanpa harus menanyakan status secara terpisah.
-
-3\. Sebagai Staff Sarpras, saya membutuhkan data laporan dan foto kerusakan mahasiswa yang terorganisir, agar proses verifikasi dan penugasan teknisi dapat dilakukan dengan lebih mudah dan terkontrol.
-
-4\. Sebagai Staff Sarpras, saya membutuhkan sistem yang dapat memproses ukuran file foto secara otomatis, agar penyimpanan server tetap efisien meskipun banyak laporan masuk.
-
-5\. Sebagai teknisi lapangan, saya membutuhkan informasi detail mengenai lokasi ruang dan deskripsi kerusakan, agar proses perbaikan dapat segera dilakukan dengan tepat sasaran.
-
-6\. Sebagai pelapor, saya membutuhkan informasi hasil penanganan atau konfirmasi penyelesaian perbaikan, agar saya dapat mengetahui bahwa fasilitas telah dapat digunakan kembali.
-
-\## 4. Arsitektur Sistem
-
-Arsitektur sistem dirancang menggunakan pendekatan berbasis web dengan pola MVC (Model-View-Controller). Seluruh pengguna mengakses sistem melalui antarmuka yang sama, kemudian sistem memproses permintaan berdasarkan hak akses dan peran masing-masing pengguna.
-
-Data seperti informasi laporan, kategori kerusakan, status, penilaian, dan riwayat disimpan secara terpusat pada database relasional. Dokumen foto kerusakan dikelola melalui direktori media server yang terintegrasi dengan modul kompresi otomatis sehingga dapat diakses oleh pihak yang memiliki kewenangan.
-
-Gambar arsitektur sistem akan dibuat dan dilampirkan secara terpisah pada file architecture.png.
-
-\## 5. Alur Fitur Unggulan
-
-Fitur Automated Photo Compression menghubungkan proses pengelolaan media sejak awal laporan dikirimkan. Alur dimulai ketika pelapor mengisi formulir kerusakan dan memilih file foto bukti.
-
-Sebelum file disimpan secara permanen ke dalam server, sistem secara otomatis menjalankan proses kompresi gambar di latar belakang untuk memperkecil ukuran file tanpa merusak kualitas detail visualnya.
-
-Setelah proses kompresi selesai, data laporan beserta foto yang telah dioptimalkan disimpan ke database, lalu diteruskan ke Staff Sarpras untuk diverifikasi dan ditugaskan kepada teknisi.
+Jika validasi berhasil, sistem menampung file sementara dan menjalankan kompresi dimensi serta *lossy compression* di latar belakang. Setelah ukuran file menjadi jauh lebih ringan, foto disimpan secara permanen di server dan tautannya diteruskan ke database laporan. Staf Sarpras kemudian dapat melihat foto tersebut dengan cepat saat melakukan verifikasi.
 
 Gambar alur fitur akan dibuat dan dilampirkan secara terpisah.
 
-\## 6. Alasan Desain
+## 6. Alasan dan Keputusan Desain
+Sistem dirancang dengan beberapa keputusan strategis berdasarkan kebutuhan pengguna dan efisiensi teknis:
+1. **Pemisahan Modul Media dengan Pengajuan:** Dipilih agar tingkat ketergantungan antar-modul rendah (*Low Coupling*). Jika lokasi penyimpanan diubah dari server lokal ke *cloud*, Modul Pengajuan tidak akan ikut terdampak.
+2. **Pemrosesan di Latar Belakang (*Background Processing*):** Dipilih karena kompresi gambar membutuhkan waktu. Dengan eksekusi di latar belakang, pengguna tidak akan mengalami *freeze* atau "layar memuat" yang lama saat menekan tombol kirim.
+3. **Peniadaan Login Pelapor dan Akses Teknisi:** Dipilih untuk memangkas birokrasi aplikasi. Pelapor dapat melapor seketika itu juga, sementara progres perbaikan teknisi cukup diwakilkan pembaruannya oleh Staf Sarpras.
 
-Sistem dirancang dalam satu platform terpusat karena proses pelaporan fasilitas melibatkan beberapa pihak dengan tanggung jawab yang berbeda. Dengan sistem yang terintegrasi, setiap pihak dapat mengakses informasi yang dibutuhkan tanpa harus menggunakan media manual yang terpisah.
+## 7. Asumsi Tim
+- Sistem digunakan oleh mahasiswa/dosen (pelapor tanpa login), Staf Sarpras, dan Dekanat/Kaprodi.
+- Setiap pengelola memiliki akun dan hak akses sesuai perannya.
+- Master data gedung dan ruangan telah dikonfigurasi oleh pihak berwenang.
+- Keputusan teknis perbaikan mengikuti SOP pihak sarpras secara *offline*, sistem hanya memfasilitasi pencatatan digitalnya.
+- Dokumen foto diunggah melalui form publik yang sudah tervalidasi batasan ekstensinya.
 
-Sistem juga menggunakan pembagian hak akses berdasarkan peran agar setiap pengguna hanya dapat melakukan aktivitas sesuai tanggung jawabnya. Selain itu, fitur kompresi foto dipilih agar performa aplikasi tetap cepat dan tidak membebani kapasitas penyimpanan server fakultas.
+## 8. Kesimpulan
+Sistem Pelaporan Fasilitas Rusak dirancang sebagai platform terintegrasi yang mempercepat alur pelaporan antara civitas akademika dan pengelola sarpras, tanpa dihalangi oleh birokrasi aplikasi yang rumit.
 
-Fitur tracking status juga dipilih karena pelapor perlu mengetahui perkembangan perbaikan tanpa harus menanyakan status secara manual kepada pihak pengelola.
-
-\## 7. Asumsi Tim
-
-\- Sistem digunakan oleh mahasiswa/dosen, Staff Sarpras, dan teknisi lapangan.
-
-\- Setiap pengguna memiliki akun dan hak akses sesuai dengan perannya di lingkungan fakultas.
-
-\- Kategori fasilitas dan daftar lokasi gedung atau laboratorium telah dimasukkan sebelumnya oleh pihak yang berwenang.
-
-\- Proses pengajuan, verifikasi, penugasan, dan perbaikan mengikuti ketentuan operasional penanganan fasilitas kampus.
-
-\- File foto bukti kerusakan diunggah dalam format gambar yang didukung oleh sistem sebelum dikompresi otomatis.
-
-\- Sistem digunakan untuk mengotomatisasi dan mengintegrasikan layanan pelaporan, sedangkan keputusan teknis penanganan tetap berada pada pihak sarpras.
-
-\## 8. Kesimpulan
-
-Sistem Pelaporan Fasilitas Rusak dirancang sebagai platform terintegrasi yang menghubungkan pelapor, pengelola sarpras, dan teknisi dalam satu alur layanan yang transparan.
-
-Fitur Automated Photo Compression menjadi fitur unggulan karena mampu menjaga efisiensi ruang penyimpanan dan kecepatan akses sistem secara otomatis, sehingga seluruh proses penanganan fasilitas dapat berjalan efektif dan terpantau dengan baik.
+Fitur **Automated Photo Compression** menjadi ujung tombak sistem karena mampu menjamin efisiensi sumber daya server dan kecepatan akses. Didukung perancangan modul yang terpisah dan penyesuaian hak akses yang tepat, sistem pengelolaan fasilitas ini siap diandalkan dalam jangka panjang.
