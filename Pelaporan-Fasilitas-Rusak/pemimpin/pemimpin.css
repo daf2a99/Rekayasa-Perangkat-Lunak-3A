@@ -1,0 +1,399 @@
+/* RESET: hilangkan margin/padding bawaan browser */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* WARNA & UKURAN (tema terang sebagai bawaan)
+   Dipakai di seluruh halaman lewat var(--nama)*/
+:root {
+  --bg: #f4f6f8;
+  --bg2: #ffffff;
+  --bg3: #f8fafc;
+  --border: #e2e8f0;
+  --border2: #cbd5e1;
+  --text: #0f172a;
+  --muted: #64748b;
+
+  --brand: #1978ec;
+  --brand-hover: #1566c8;
+  --brand-active: #1257a8;
+  --brand-text: #1566c8;
+  --brand-soft: rgba(25, 120, 236, 0.1);
+
+  --danger: #b91c1c;
+  --danger-soft: rgba(220, 38, 38, 0.1);
+
+  --radius: 8px;
+  --radius-lg: 16px;
+}
+
+/* Tema gelap: aktif saat <body class="dark"> (diatur di admin.js) */
+body.dark {
+  --bg: #0f172a;
+  --bg2: #1e293b;
+  --bg3: #334155;
+  --border: #334155;
+  --border2: #475569;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+
+  --brand-text: #60a5fa;
+  --brand-soft: rgba(96, 165, 250, 0.16);
+
+  --danger: #fca5a5;
+  --danger-soft: rgba(248, 113, 113, 0.15);
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* Garis fokus yang jelas untuk pengguna keyboard */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+/* Aksen biru pada nama brand */
+.accent {
+  color: var(--brand-text);
+}
+
+/*HEADER*/
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+body.dark header {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+}
+.logo img {
+  height: 56px;
+  width: auto;
+}
+
+/* Tombol ganti tema (ikon bulan/matahari) */
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.theme-toggle:hover {
+  background: var(--border2);
+}
+
+/* Gaya dasar semua ikon garis (SVG). currentColor = ikut warna teks sekitarnya */
+.theme-toggle svg,
+.login-icon svg,
+.toggle-password svg,
+.back-link svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Terang: tampilkan bulan. Gelap: tampilkan matahari */
+.theme-toggle .icon-sun,
+body.dark .theme-toggle .icon-moon {
+  display: none;
+}
+body.dark .theme-toggle .icon-sun {
+  display: block;
+}
+
+/*AREA UTAMA & KARTU LOGIN*/
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeUp 0.5s ease forwards;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+body.dark .card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Animasi kartu muncul dari bawah */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Judul kartu: ikon, nama portal, keterangan */
+.login-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+.login-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 14px;
+  background: var(--brand-soft);
+  color: var(--brand-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-icon svg {
+  width: 28px;
+  height: 28px;
+}
+.card-title {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+.card-sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
+}
+
+/*FORM*/
+.field {
+  margin-bottom: 1.2rem;
+}
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+
+.form-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  color: var(--text);
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.form-input::placeholder {
+  color: var(--muted);
+}
+.form-input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-soft);
+}
+/* Kolom ditandai merah oleh admin.js saat isiannya bermasalah */
+.form-input.invalid {
+  border-color: var(--danger);
+}
+
+/* Kolom password + tombol mata */
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper .form-input {
+  padding-right: 3rem;
+}
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--muted);
+  cursor: pointer;
+}
+.toggle-password:hover {
+  color: var(--text);
+}
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
+}
+/* Mata on and off*/
+.toggle-password .icon-eye-off,
+.toggle-password[aria-pressed="true"] .icon-eye {
+  display: none;
+}
+.toggle-password[aria-pressed="true"] .icon-eye-off {
+  display: block;
+}
+
+/* Pesan error di atas tombol masuk */
+.form-error {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+.form-error[hidden] {
+  display: none;
+}
+
+/* ── TOMBOL MASUK ── */
+.btn {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  border: none;
+  border-radius: var(--radius);
+  font-family: "Oswald", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+.btn-primary {
+  background: var(--brand-hover);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--brand-active);
+}
+.btn-primary:active {
+  transform: scale(0.99);
+}
+/* Saat proses login berjalan atau dibatasi, tombol dikunci oleh admin.js */
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── LINK KEMBALI── */
+.back-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-link:hover {
+  color: var(--brand-text);
+  text-decoration: none;
+}
+.back-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  margin-top: auto;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+/* ── TAMPILAN HP ── */
+@media (max-width: 650px) {
+  header {
+    padding: 0.8rem 1.25rem;
+  }
+  .logo {
+    font-size: 1.4rem;
+  }
+  .logo img {
+    height: 44px;
+  }
+  .card {
+    padding: 2rem 1.25rem;
+  }
+}
+
+/* Hormati pengguna yang mematikan animasi di perangkatnya */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}
