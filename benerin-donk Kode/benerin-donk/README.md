@@ -13,7 +13,7 @@
 | Anggota | NIM |
 |---|---|
 | Daffa Haqurrizqo Rabbany | 1251420091 |
-| Naufal Fadhlan | 12514200023 |
+| Naufal Fadhlan | 1251420023 |
 | Ananda Ahmad Firjatullah | 1251420048 |
 | Helmi Yahya Prasetyo (3D) | 1251420085 |
 
