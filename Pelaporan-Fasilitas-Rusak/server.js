@@ -82,6 +82,16 @@ app.post("/api/laporan", (req, res) => {
       return res.status(400).json({ pesan: "Foto bukti wajib diunggah." });
     }
 
+    if (nama.trim().length < 3 || nama.trim().length > 100) {
+    return res.status(400).json({ pesan: "Nama harus 3-100 karakter." });
+    }
+    if (nip_nim.trim().length < 5 || nim_nip.trim().length > 30) {
+      return res.status(400).json({ pesan: "NIP/NIM harus 5-30 karakter." });
+    }
+    if (deskripsi.trim().length < 10 || deskripsi.trim().length > 1000) {
+      return res.status(400).json({ pesan: "Deskripsi harus 10-1000 karakter." });
+    }
+
     // b. Kompres foto lalu simpan ke folder uploads
     const tersimpan = [];
     const hapusFile = () =>
