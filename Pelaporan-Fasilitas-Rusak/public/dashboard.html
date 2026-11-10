@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="dashboard.css" />
+    <link rel="icon" type="image/jpeg" href="../../logo.jpeg"/>
+    <title>Dashboard Pelapor</title>
+</head>
+<!-- class="light" = tema awal, supaya tidak berkedip sebelum dashboard.js jalan -->
+<body class="light">
+
+    <header>
+        <div class="logo">
+            <img src="../../logo-nobg.png" alt="Logo Benerin Donk" />
+            <span>Benerin<span class="accent"> Donk...</span></span>
+        </div>
+
+        <button class="theme-toggle" id="theme-btn" type="button" aria-label="Ganti tema terang atau gelap">
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="navdiv">
+        <nav class="navbar">
+            <ul>
+                <li>
+                    <a href="dashboard.html">Home</a>
+                </li>
+                <li>
+                    <a href="riwayat/riwayat.html">Daftar Laporan</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <div class="card" id="panel-form">
+            <div class="form-header">
+                <h2>Lapor Kerusakan</h2>
+            </div>
+
+            <!--Card Laporan-->
+            <form id="form-laporan" action="/api/laporan" method="post" enctype="multipart/form-data">
+
+                <div class="login-subheader">
+                    <h3>Data Pelapor</h3>
+                </div>
+
+                <div class="field">
+                    <label for="nama">Nama Lengkap</label>
+
+                    <input type="text" id="nama" name="nama" class="form-input" placeholder="Reza Yahuditore" minlength="3" maxlength="100" autocomplete="name" required>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="nim_nip">NIM/NIP</label>
+
+                        <input type="text" id="nim_nip" name="nim_nip" class="form-input" placeholder="1251230085" inputmode="numeric" required minlength="5" maxlength="30">
+                    </div>
+
+                    <div class="field">
+                        <label for="no_whatsapp">Nomor WhatsApp</label>
+
+                        <input type="tel" id="no_whatsapp" name="no_whatsapp" class="form-input" placeholder="08xxxxxxxxxxx" minlength="10" maxlength="16" autocomplete="tel" required>
+                    </div>
+                </div>
+
+                <div class="login-subheader">
+                    <h3>Detail Kerusakan</h3>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="kategori">Kategori Barang</label>
+                        
+                        <!-- diisi dashboard.js dari /api/kategori (tanpa name, hanya penyaring) -->
+                        <select id="kategori" class="form-input" required>
+                            <option value="">Pilih Kategori</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="barang">Nama Barang</label>
+
+                        <!-- name="id_kategori": ini yang dikirim ke server. Terkunci sampai kategori dipilih -->
+                        <select id="barang" name="id_kategori" class="form-input" required disabled>
+                            <option value="">Pilih kategori dulu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="login-subheader">
+                    <h3>Lokasi</h3>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="lantai">Lantai</label>
+
+                        <!-- diisi dashboard.js dari /api/lokasi (tanpa name, hanya penyaring) -->
+                        <select id="lantai" class="form-input" required>
+                            <option value="">Pilih Lantai</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="ruang">Ruang</label>
+
+                        <!-- name="id_lokasi": ini yang dikirim ke server. Terkunci sampai lantai dipilih -->
+                        <select id="ruang" name="id_lokasi" class="form-input" required disabled>
+                            <option value="">Pilih lantai dulu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="login-subheader">
+                    <h3>Deskripsi dan Foto</h3>
+                </div>
+
+                <div class="field">
+                    <label for="deskripsi">Deskripsi Kerusakan</label>
+
+                    <textarea id="deskripsi" name="deskripsi" class="form-input" rows="5" placeholder="Ceritakan apa yang rusak dan seperti apa kondisinya" minlength="10" maxlength="1000" required></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="foto">Foto Bukti</label>
+
+                    <!-- multiple: boleh pilih beberapa foto (server menerima maks 3, JPG/PNG) -->
+                    <input id="foto" name="foto" type="file" class="form-input" accept="image/png, image/jpeg" multiple required>
+                </div>
+
+                <!-- Tempat pesan error dari server (data kurang, gagal simpan, dll). Diisi dashboard.js -->
+                <p class="form-error" id="form-error" role="alert" hidden></p>
+
+                <!-- Tombol kirim: tanpa ini form tidak bisa dikirim -->
+                <button type="submit" class="btn btn-primary" id="kirim-btn">Kirim Laporan</button>
+            </form>
+
+        </div>
+
+        <!-- ═══════════ PANEL SUKSES (tersembunyi, tampil setelah laporan terkirim) ═══════════ -->
+        <div class="card" id="panel-sukses" hidden>
+            <div class="form-header">
+                <h2>Laporan Terkirim</h2>
+                <p>Simpan kode ini untuk memantau status laporan.</p>
+            </div>
+
+            <p class="kode-laporan" id="kode-unik"></p>
+
+            <button type="button" class="btn btn-primary" id="salin-btn">Salin Kode</button>
+            <button type="button" class="btn" id="lapor-lagi-btn">Buat Laporan Baru</button>
+        </div>
+    </main>
+
+    <footer>
+      &copy; <span id="year"></span> placeholder
+    </footer>
+
+      <script src="dashboard.js"></script>
+</body>
+</html>
