@@ -88,6 +88,7 @@ body.dark header {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
+
 .logo {
   display: flex;
   align-items: center;
@@ -191,11 +192,7 @@ body.dark .card {
   margin-bottom: 1.75rem;
 }
 .login-icon {
-  width: 56px;
-  height: 56px;
   margin: 0 auto 1rem;
-  border-radius: 14px;
-  background: var(--brand-soft);
   color: var(--brand-text);
   display: flex;
   align-items: center;
@@ -204,6 +201,14 @@ body.dark .card {
 .login-icon svg {
   width: 28px;
   height: 28px;
+}
+/* Logo gambar di dalam kotak ikon: ukuran kecil standar */
+/* Logo bebas (tanpa kotak), gaya sama dengan logo di header.
+   Ubah angka height untuk memperbesar atau memperkecil. */
+.login-icon img {
+  display: block;
+  height: 64px;
+  width: auto;
 }
 .card-title {
   font-family: "Oswald", sans-serif;
