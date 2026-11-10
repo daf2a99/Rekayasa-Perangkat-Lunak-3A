@@ -169,3 +169,39 @@ body.dark .theme-toggle .icon-sun {
 .navbar li{
     float: left;
 }
+
+main{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.card{
+  margin: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeUp 0.5s ease forwards;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.form-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.login-subheader{
+  flex-direction: row;
+}
