@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    />
+
+    <!-- Menggunakan stylesheet dashboard untuk komponen yang dipakai bersama. -->
+    <link rel="stylesheet" href="../dashboard.css" />
+
+    <!-- CSS khusus halaman Lacak Laporan akan dibuat pada tahap berikutnya. -->
+    <link rel="stylesheet" href="riwayat.css" />
+
+    <link rel="icon" type="image/jpeg" href="../../../logo.jpeg" />
+    <title>Lacak Laporan | Benerin Donk</title>
+</head>
+
+<!-- Tema awal mengikuti dashboard Pelapor. -->
+<body class="light">
+
+    <header>
+        <div class="logo">
+            <img src="../../../logo-nobg.png" alt="Logo Benerin Donk" />
+            <span>Benerin<span class="accent"> Donk...</span></span>
+        </div>
+
+        <button
+            class="theme-toggle"
+            id="theme-btn"
+            type="button"
+            aria-label="Ganti tema terang atau gelap"
+        >
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="navdiv">
+        <nav class="navbar" aria-label="Navigasi Pelapor">
+            <ul>
+                <li>
+                    <a href="../dashboard.html">Home</a>
+                </li>
+                <li>
+                    <a href="riwayat.html" aria-current="page">Lacak Laporan</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <!-- PANEL PENCARIAN: Pelapor memasukkan Kode Unik Laporan. -->
+        <section class="card" id="panel-pencarian" aria-labelledby="judul-pencarian">
+            <div class="form-header">
+                <h2 id="judul-pencarian">Lacak Laporan</h2>
+                <p>Masukkan Kode Unik Laporan untuk melihat detail dan perkembangan perbaikannya.</p>
+            </div>
+
+            <form id="form-cari-laporan" method="post">
+                <div class="field">
+                    <label for="kode-unik-input">Kode Unik Laporan</label>
+                    <input
+                        type="search"
+                        id="kode-unik-input"
+                        name="kode_unik"
+                        class="form-input"
+                        placeholder="Contoh: FST-R-001"
+                        maxlength="50"
+                        autocomplete="off"
+                        autocapitalize="characters"
+                        spellcheck="false"
+                        aria-describedby="petunjuk-kode"
+                        required
+                    />
+                    <small id="petunjuk-kode">
+                        Gunakan kode yang ditampilkan setelah laporan berhasil dikirim.
+                    </small>
+                </div>
+
+                <!-- Pesan ini ditampilkan oleh JavaScript jika input kosong atau kode tidak ditemukan. -->
+                <p class="form-error" id="cari-error" role="alert" hidden></p>
+
+                <!-- Indikator ini ditampilkan saat sistem sedang mencari laporan. -->
+                <p id="cari-loading" role="status" aria-live="polite" hidden>
+                    Sedang mencari laporan...
+                </p>
+
+                <button type="submit" class="btn btn-primary" id="cari-btn">
+                    Cari Laporan
+                </button>
+            </form>
+        </section>
+
+        <!-- PANEL HASIL: baru ditampilkan setelah Kode Unik ditemukan. -->
+        <section
+            class="card"
+            id="panel-hasil"
+            aria-labelledby="judul-hasil"
+            aria-live="polite"
+            hidden
+        >
+            <div class="form-header">
+                <h2 id="judul-hasil">Detail Laporan</h2>
+                <p>Berikut informasi dan perkembangan laporan yang Anda cari.</p>
+            </div>
+
+            <div class="report-overview">
+                <div class="report-code">
+                    <span class="detail-label">Kode Unik Laporan</span>
+                    <p class="kode-laporan" id="hasil-kode-unik">-</p>
+                </div>
+
+                <div class="report-current-status">
+                    <span class="detail-label">Status Saat Ini</span>
+                    <span class="status-badge" id="status-terkini">-</span>
+                </div>
+            </div>
+
+            <div class="login-subheader">
+                <h3>Informasi Laporan</h3>
+            </div>
+
+            <dl class="report-details">
+                <div class="detail-item">
+                    <dt>Kategori Fasilitas</dt>
+                    <dd id="hasil-kategori">-</dd>
+                </div>
+
+                <div class="detail-item">
+                    <dt>Nama Fasilitas</dt>
+                    <dd id="hasil-fasilitas">-</dd>
+                </div>
+
+                <div class="detail-item">
+                    <dt>Lokasi</dt>
+                    <dd id="hasil-lokasi">-</dd>
+                </div>
+
+                <div class="detail-item">
+                    <dt>Tanggal Laporan</dt>
+                    <dd id="hasil-tanggal">-</dd>
+                </div>
+
+                <div class="detail-item detail-description">
+                    <dt>Deskripsi Kerusakan</dt>
+                    <dd id="hasil-deskripsi">-</dd>
+                </div>
+            </dl>
+
+            <div class="login-subheader">
+                <h3>Riwayat Perkembangan</h3>
+            </div>
+
+            <p class="timeline-description">
+                Riwayat ini menunjukkan perubahan status laporan yang tercatat di sistem.
+            </p>
+
+            <!-- JavaScript akan mengisi daftar ini berdasarkan data Riwayat_Status. -->
+            <ol class="timeline" id="timeline-status" aria-label="Riwayat perubahan status"></ol>
+
+            <p id="timeline-kosong" role="status" hidden>
+                Belum ada catatan perkembangan untuk laporan ini.
+            </p>
+
+            <!-- Template satu item timeline yang akan digandakan oleh JavaScript. -->
+            <template id="template-item-status">
+                <li class="timeline-item">
+                    <span class="timeline-marker" aria-hidden="true"></span>
+                    <div class="timeline-content">
+                        <div class="timeline-heading">
+                            <h4 data-field="status"></h4>
+                            <time data-field="waktu-update"></time>
+                        </div>
+                        <p data-field="catatan"></p>
+                    </div>
+                </li>
+            </template>
+
+            <button type="button" class="btn" id="cari-laporan-lain-btn">
+                Lacak Laporan Lain
+            </button>
+        </section>
+    </main>
+
+    <footer>
+        &copy; <span id="year"></span> Benerin Donk
+    </footer>
+
+    <!-- JavaScript khusus pencarian, pengisian hasil, timeline, dan tema akan dibuat kemudian. -->
+    <script src="riwayat.js" defer></script>
+</body>
+</html>
