@@ -11,19 +11,17 @@
         rel="stylesheet"
     />
 
-    <!-- Menggunakan stylesheet dashboard untuk komponen yang dipakai bersama. -->
+    <!-- Menggunakan stylesheet utama yang sama dengan dashboard Pelapor. -->
     <link rel="stylesheet" href="../dashboard.css" />
-
-    <!-- CSS khusus halaman Lacak Laporan akan dibuat pada tahap berikutnya. -->
+    <!-- CSS khusus halaman ini akan ditambahkan pada tahap berikutnya. -->
     <link rel="stylesheet" href="riwayat.css" />
 
     <link rel="icon" type="image/jpeg" href="../../../logo.jpeg" />
-    <title>Lacak Laporan | Benerin Donk</title>
+    <title>Daftar Laporan | Benerin Donk</title>
 </head>
 
-<!-- Tema awal mengikuti dashboard Pelapor. -->
 <body class="light">
-
+    <!-- HEADER -->
     <header>
         <div class="logo">
             <img src="../../../logo-nobg.png" alt="Logo Benerin Donk" />
@@ -46,6 +44,7 @@
         </button>
     </header>
 
+    <!-- NAVIGASI -->
     <div class="navdiv">
         <nav class="navbar" aria-label="Navigasi Pelapor">
             <ul>
@@ -53,93 +52,178 @@
                     <a href="../dashboard.html">Home</a>
                 </li>
                 <li>
-                    <a href="riwayat.html" aria-current="page">Lacak Laporan</a>
+                    <a href="riwayat.html" aria-current="page">Daftar Laporan</a>
                 </li>
             </ul>
         </nav>
     </div>
 
-    <main>
+    <main class="page-container">
         <!-- JUDUL HALAMAN -->
-        <section class="page-intro" aria-labelledby="judul-halaman">
-            <div class="form-header">
-                <h2 id="judul-halaman">Lacak Laporan Fasilitas</h2>
+        <section class="page-heading" aria-labelledby="judul-halaman">
+            <div class="page-heading-content">
+                <h1 id="judul-halaman">Daftar Laporan Fasilitas</h1>
                 <p>
                     Lihat laporan kerusakan fasilitas yang telah dikirimkan dan pantau
-                    perkembangan penanganannya.
+                    perkembangan penanganannya di sini.
                 </p>
             </div>
         </section>
 
-        <!-- PANEL PENCARIAN: Pelapor tetap dapat mencari laporan secara langsung memakai Kode Unik. -->
-        <section class="card" id="panel-pencarian" aria-labelledby="judul-pencarian">
-            <div class="form-header">
-                <h3 id="judul-pencarian">Cari dengan Kode Unik</h3>
+        <!-- PENCARIAN KODE UNIK -->
+        <section class="search-section card" id="panel-pencarian" aria-labelledby="judul-pencarian">
+            <div class="section-heading">
+                <h2 id="judul-pencarian">Cari Laporan dengan Kode Unik</h2>
                 <p>
-                    Masukkan Kode Unik Laporan yang diperoleh setelah mengirim laporan
-                    untuk langsung membuka detail dan riwayat perkembangannya.
+                    Sudah memiliki kode laporan? Masukkan kode tersebut untuk langsung
+                    melihat detail dan riwayat perkembangannya.
                 </p>
             </div>
 
             <form id="form-cari-laporan" method="get">
-                <div class="field">
-                    <label for="kode-unik-input">Kode Unik Laporan</label>
-                    <input
-                        type="search"
-                        id="kode-unik-input"
-                        name="kode_unik"
-                        class="form-input"
-                        placeholder="Contoh: FST-R-001"
-                        maxlength="50"
-                        autocomplete="off"
-                        autocapitalize="characters"
-                        spellcheck="false"
-                        aria-describedby="petunjuk-kode"
-                        required
-                    />
-                    <small id="petunjuk-kode">
-                        Pencarian ini hanya menggunakan Kode Unik Laporan, bukan NIM/NIP.
-                    </small>
+                <div class="search-controls">
+                    <div class="field search-field">
+                        <label for="kode-unik-input">Kode Unik Laporan</label>
+                        <input
+                            type="search"
+                            id="kode-unik-input"
+                            name="kode_unik"
+                            class="form-input"
+                            placeholder="Contoh: FST-R-001"
+                            maxlength="50"
+                            autocomplete="off"
+                            autocapitalize="characters"
+                            spellcheck="false"
+                            aria-describedby="petunjuk-kode"
+                            required
+                        />
+                        <small id="petunjuk-kode" class="field-hint">
+                            Masukkan kode yang muncul setelah laporan berhasil dikirim.
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="cari-btn">
+                        Cari Laporan
+                    </button>
                 </div>
 
-                <!-- Pesan error ditampilkan oleh JavaScript jika kode tidak ditemukan. -->
+                <!-- Pesan error dan loading akan dikendalikan oleh JavaScript. -->
                 <p class="form-error" id="cari-error" role="alert" hidden></p>
-
-                <!-- Indikator ditampilkan saat sistem sedang mencari laporan. -->
-                <p id="cari-loading" role="status" aria-live="polite" hidden>
+                <p id="cari-loading" class="loading-message" role="status" aria-live="polite" hidden>
                     Sedang mencari laporan...
                 </p>
-
-                <button type="submit" class="btn btn-primary" id="cari-btn">
-                    Cari Laporan
-                </button>
             </form>
         </section>
 
-        <!-- PANEL DAFTAR PUBLIK: menampilkan laporan dari seluruh pelapor. -->
-        <section class="card" id="panel-daftar-laporan" aria-labelledby="judul-daftar-laporan">
-            <div class="form-header">
-                <h3 id="judul-daftar-laporan">Daftar Laporan Fasilitas</h3>
-                <p>
-                    Telusuri laporan yang masuk. Pilih salah satu laporan untuk melihat
-                    informasi dan riwayat perkembangan penanganannya.
-                </p>
+        <!-- DETAIL DITAMPILKAN DI BAWAH PENCARIAN AGAR MUDAH DITEMUKAN, TERMASUK DI HP. -->
+        <section
+            class="detail-section card"
+            id="panel-detail-laporan"
+            aria-labelledby="judul-detail-laporan"
+            aria-live="polite"
+            hidden
+        >
+            <div class="detail-section-heading">
+                <div>
+                    <h2 id="judul-detail-laporan">Detail Laporan</h2>
+                    <p>Informasi laporan dan perkembangan penanganannya.</p>
+                </div>
+                <div class="report-current-status">
+                    <span class="detail-label">Status Saat Ini</span>
+                    <span class="status-badge" id="status-terkini">-</span>
+                </div>
             </div>
 
-            <!-- Ringkasan jumlah laporan pada setiap kelompok. Nilai diisi oleh JavaScript. -->
-            <div class="report-summary" aria-label="Ringkasan jumlah laporan">
-                <div class="summary-item">
-                    <span class="summary-label">Belum Selesai</span>
-                    <strong id="jumlah-belum-selesai">-</strong>
+            <div class="report-overview">
+                <div class="report-code">
+                    <span class="detail-label">Kode Unik Laporan</span>
+                    <p class="kode-laporan" id="hasil-kode-unik">-</p>
                 </div>
-                <div class="summary-item">
-                    <span class="summary-label">Sudah Selesai</span>
-                    <strong id="jumlah-selesai">-</strong>
+            </div>
+
+            <div class="detail-content-section">
+                <h3>Informasi Laporan</h3>
+                <dl class="report-details">
+                    <div class="detail-item">
+                        <dt>Kategori Fasilitas</dt>
+                        <dd id="hasil-kategori">-</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Nama Fasilitas</dt>
+                        <dd id="hasil-fasilitas">-</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Lokasi</dt>
+                        <dd id="hasil-lokasi">-</dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>Tanggal Laporan</dt>
+                        <dd id="hasil-tanggal">-</dd>
+                    </div>
+                    <div class="detail-item detail-description">
+                        <dt>Deskripsi Kerusakan</dt>
+                        <dd id="hasil-deskripsi">-</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="detail-content-section">
+                <h3>Riwayat Perkembangan</h3>
+                <p class="timeline-description">
+                    Riwayat ini menunjukkan perubahan status yang tercatat sejak laporan diterima.
+                </p>
+
+                <!-- JavaScript mengisi timeline berdasarkan entitas Riwayat_Status. -->
+                <ol class="timeline" id="timeline-status" aria-label="Riwayat perubahan status"></ol>
+                <p id="timeline-kosong" class="empty-state" role="status" hidden>
+                    Belum ada catatan perkembangan untuk laporan ini.
+                </p>
+
+                <template id="template-item-status">
+                    <li class="timeline-item">
+                        <span class="timeline-marker" aria-hidden="true"></span>
+                        <div class="timeline-content">
+                            <div class="timeline-heading">
+                                <h4 data-field="status"></h4>
+                                <time data-field="waktu-update"></time>
+                            </div>
+                            <p data-field="catatan"></p>
+                        </div>
+                    </li>
+                </template>
+            </div>
+
+            <button type="button" class="btn" id="kembali-ke-daftar-btn">
+                Kembali ke Daftar Laporan
+            </button>
+        </section>
+
+        <!-- DAFTAR LAPORAN PUBLIK -->
+        <section class="list-section" id="panel-daftar-laporan" aria-labelledby="judul-daftar-laporan">
+            <div class="list-section-heading">
+                <div class="list-heading-text">
+                    <h2 id="judul-daftar-laporan">Semua Laporan</h2>
+                    <p>
+                        Telusuri laporan fasilitas dari seluruh pelapor. Pilih laporan
+                        untuk melihat detail dan perkembangan penanganannya.
+                    </p>
+                </div>
+
+                <!-- Angka ringkasan akan diisi oleh JavaScript. -->
+                <div class="report-summary" aria-label="Ringkasan jumlah laporan">
+                    <div class="summary-item">
+                        <span class="summary-label">Belum Selesai</span>
+                        <strong id="jumlah-belum-selesai">-</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Sudah Selesai</span>
+                        <strong id="jumlah-selesai">-</strong>
+                    </div>
                 </div>
             </div>
 
             <!-- TAB STATUS LAPORAN -->
-            <div class="report-tabs" role="tablist" aria-label="Filter status laporan">
+            <div class="report-tabs" role="tablist" aria-label="Filter daftar laporan berdasarkan status">
                 <button
                     type="button"
                     class="report-tab active"
@@ -169,21 +253,15 @@
                 </button>
             </div>
 
-            <!-- TAB 1: status selain Selesai, misalnya Laporan Diterima, Dalam Perbaikan, atau Menunggu Sparepart. -->
+            <!-- TAB 1: SEMUA LAPORAN YANG BELUM SELESAI -->
             <section
                 class="report-tab-panel active"
                 id="panel-belum-selesai"
                 role="tabpanel"
                 aria-labelledby="tab-belum-selesai"
             >
-                <div class="report-list-header">
-                    <h4>Laporan yang Belum Selesai Ditangani</h4>
-                    <p>Berisi laporan yang masih menunggu penanganan atau sedang dalam proses perbaikan.</p>
-                </div>
-
-                <!-- Daftar kartu laporan belum selesai akan dimasukkan oleh JavaScript. -->
                 <div class="report-list" id="daftar-laporan-belum-selesai">
-                    <p class="list-loading" id="loading-belum-selesai" role="status">
+                    <p class="list-loading" id="loading-belum-selesai" role="status" aria-live="polite">
                         Daftar laporan akan ditampilkan setelah data berhasil dimuat.
                     </p>
                 </div>
@@ -193,7 +271,7 @@
                 </p>
             </section>
 
-            <!-- TAB 2: hanya laporan dengan status Selesai. -->
+            <!-- TAB 2: SEMUA LAPORAN YANG SUDAH SELESAI -->
             <section
                 class="report-tab-panel"
                 id="panel-selesai"
@@ -201,14 +279,8 @@
                 aria-labelledby="tab-selesai"
                 hidden
             >
-                <div class="report-list-header">
-                    <h4>Laporan yang Sudah Selesai</h4>
-                    <p>Berisi laporan yang proses perbaikannya telah dinyatakan selesai.</p>
-                </div>
-
-                <!-- Daftar kartu laporan selesai akan dimasukkan oleh JavaScript. -->
                 <div class="report-list" id="daftar-laporan-selesai">
-                    <p class="list-loading" id="loading-selesai" role="status">
+                    <p class="list-loading" id="loading-selesai" role="status" aria-live="polite">
                         Daftar laporan akan ditampilkan setelah data berhasil dimuat.
                     </p>
                 </div>
@@ -218,7 +290,7 @@
                 </p>
             </section>
 
-            <!-- Template kartu yang dipakai untuk setiap laporan pada kedua tab. -->
+            <!-- Satu template kartu digunakan untuk kedua tab. -->
             <template id="template-kartu-laporan">
                 <article class="report-card">
                     <div class="report-card-header">
@@ -230,7 +302,7 @@
                     </div>
 
                     <div class="report-card-body">
-                        <h4 data-field="nama-fasilitas"></h4>
+                        <h3 data-field="nama-fasilitas"></h3>
                         <p class="report-category" data-field="kategori"></p>
                         <p class="report-location" data-field="lokasi"></p>
                         <p class="report-date">
@@ -241,109 +313,14 @@
                     </div>
 
                     <div class="report-card-footer">
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            data-action="lihat-detail"
-                        >
+                        <button type="button" class="btn btn-primary" data-action="lihat-detail">
                             Lihat Detail
                         </button>
                     </div>
                 </article>
             </template>
 
-            <!-- Template di atas hanya menampilkan informasi laporan yang aman untuk dilihat publik. -->
-            <!-- Jangan masukkan nama pelapor, NIM/NIP, nomor WhatsApp, email, atau data pribadi lainnya ke kartu publik. -->
-        </section>
-
-        <!-- PANEL DETAIL: dipakai baik saat pengguna memilih kartu maupun mencari Kode Unik. -->
-        <section
-            class="card"
-            id="panel-detail-laporan"
-            aria-labelledby="judul-detail-laporan"
-            aria-live="polite"
-            hidden
-        >
-            <div class="form-header">
-                <h3 id="judul-detail-laporan">Detail Laporan</h3>
-                <p>Informasi laporan dan riwayat perkembangan penanganannya.</p>
-            </div>
-
-            <div class="report-overview">
-                <div class="report-code">
-                    <span class="detail-label">Kode Unik Laporan</span>
-                    <p class="kode-laporan" id="hasil-kode-unik">-</p>
-                </div>
-
-                <div class="report-current-status">
-                    <span class="detail-label">Status Saat Ini</span>
-                    <span class="status-badge" id="status-terkini">-</span>
-                </div>
-            </div>
-
-            <div class="login-subheader">
-                <h4>Informasi Laporan</h4>
-            </div>
-
-            <dl class="report-details">
-                <div class="detail-item">
-                    <dt>Kategori Fasilitas</dt>
-                    <dd id="hasil-kategori">-</dd>
-                </div>
-
-                <div class="detail-item">
-                    <dt>Nama Fasilitas</dt>
-                    <dd id="hasil-fasilitas">-</dd>
-                </div>
-
-                <div class="detail-item">
-                    <dt>Lokasi</dt>
-                    <dd id="hasil-lokasi">-</dd>
-                </div>
-
-                <div class="detail-item">
-                    <dt>Tanggal Laporan</dt>
-                    <dd id="hasil-tanggal">-</dd>
-                </div>
-
-                <div class="detail-item detail-description">
-                    <dt>Deskripsi Kerusakan</dt>
-                    <dd id="hasil-deskripsi">-</dd>
-                </div>
-            </dl>
-
-            <div class="login-subheader">
-                <h4>Riwayat Perkembangan</h4>
-            </div>
-
-            <p class="timeline-description">
-                Riwayat ini menunjukkan perubahan status yang tercatat sejak laporan diterima.
-            </p>
-
-            <!-- JavaScript akan mengisi timeline dari entitas Riwayat_Status. -->
-            <ol class="timeline" id="timeline-status" aria-label="Riwayat perubahan status"></ol>
-
-            <p id="timeline-kosong" role="status" hidden>
-                Belum ada catatan perkembangan untuk laporan ini.
-            </p>
-
-            <!-- Template satu item timeline yang akan digandakan oleh JavaScript. -->
-            <template id="template-item-status">
-                <li class="timeline-item">
-                    <span class="timeline-marker" aria-hidden="true"></span>
-                    <div class="timeline-content">
-                        <div class="timeline-heading">
-                            <h5 data-field="status"></h5>
-                            <time data-field="waktu-update"></time>
-                        </div>
-                        <p data-field="catatan"></p>
-                    </div>
-                </li>
-            </template>
-
-            <button type="button" class="btn" id="kembali-ke-daftar-btn">
-                Kembali ke Daftar Laporan
-            </button>
+            <!-- Kartu publik tidak boleh menampilkan nama, NIM/NIP, WhatsApp, atau email pelapor. -->
         </section>
     </main>
 
@@ -351,7 +328,7 @@
         &copy; <span id="year"></span> Benerin Donk
     </footer>
 
-    <!-- JavaScript akan menangani tab, pemuatan daftar, pencarian kode, detail, timeline, dan tema. -->
+    <!-- JavaScript akan menangani pencarian, tab, daftar, detail, timeline, dan tema. -->
     <script src="riwayat.js" defer></script>
 </body>
 </html>
