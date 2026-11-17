@@ -8,7 +8,7 @@ const sharp = require("sharp");
 const pool = require("./db");
 
 const app = express();
-app.use(express.json());
+
 // Hanya isi folder public/ yang bisa dibuka dari browser
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -26,7 +26,17 @@ const upload = multer({
       : cb(new Error("FORMAT_FOTO")),
 });
 
-/* ── 1. Daftar kategori untuk dropdown (kelompok + nama barang) ── */
+// Kolom wajib: name di form -> label yang tampil ke pelapor
+const WAJIB = {
+  nama: "Nama Lengkap",
+  nip_nim: "NIM/NIP",
+  no_wa: "Nomor WhatsApp",
+  id_kategori: "Nama Barang",
+  id_lokasi: "Ruang",
+  deskripsi: "Deskripsi Kerusakan",
+};
+
+/* ── 1. Daftar kategori untuk dropdown ── */
 app.get("/api/kategori", async (req, res) => {
   try {
     const [baris] = await pool.execute(
@@ -40,7 +50,7 @@ app.get("/api/kategori", async (req, res) => {
   }
 });
 
-/* ── 2. Daftar lokasi (lantai + ruang) untuk dropdown ── */
+/* ── 2. Daftar lokasi untuk dropdown ── */
 app.get("/api/lokasi", async (req, res) => {
   try {
     const [baris] = await pool.execute(
@@ -66,33 +76,41 @@ app.post("/api/laporan", (req, res) => {
       return res.status(400).json({ pesan });
     }
 
-    // a. Validasi isian
-    const { nama, nip_nim, no_wa, id_kategori, id_lokasi, deskripsi } = req.body;
     const foto = req.files || [];
 
-    if (![nama, nip_nim, no_wa, id_kategori, id_lokasi, deskripsi]
-          .every((v) => v && String(v).trim())) {
-      return res.status(400).json({ pesan: "Data belum lengkap." });
+    // a. Cek kolom yang kosong, lalu sebutkan satu per satu
+    const kurang = Object.keys(WAJIB)
+      .filter((k) => !req.body[k] || !String(req.body[k]).trim())
+      .map((k) => WAJIB[k]);
+    if (foto.length === 0) kurang.push("Foto Bukti");
+
+    if (kurang.length > 0) {
+      console.log("DATA DITERIMA:", req.body); // bantu debugging, lihat di terminal
+      return res.status(400).json({ pesan: "Data belum lengkap: " + kurang.join(", ") + "." });
     }
-    const wa = no_wa.replace(/[\s-]/g, "");
+
+    // b. Rapikan isian (name di form: nip_nim dan no_wa)
+    const nama = req.body.nama.trim();
+    const nip_nim = req.body.nip_nim.trim();
+    const deskripsi = req.body.deskripsi.trim();
+    const { id_kategori, id_lokasi } = req.body;
+    const wa = req.body.no_wa.replace(/[\s-]/g, "");
+
+    // c. Cek format dan panjang
+    if (nama.length < 3 || nama.length > 100) {
+      return res.status(400).json({ pesan: "Nama harus 3-100 karakter." });
+    }
+    if (nip_nim.length < 5 || nip_nim.length > 30) {
+      return res.status(400).json({ pesan: "NIM/NIP harus 5-30 karakter." });
+    }
     if (!/^(\+62|62|0)8\d{8,12}$/.test(wa)) {
       return res.status(400).json({ pesan: "Format nomor WhatsApp tidak sesuai." });
     }
-    if (foto.length === 0) {
-      return res.status(400).json({ pesan: "Foto bukti wajib diunggah." });
-    }
-
-    if (nama.trim().length < 3 || nama.trim().length > 100) {
-    return res.status(400).json({ pesan: "Nama harus 3-100 karakter." });
-    }
-    if (nip_nim.trim().length < 5 || nim_nip.trim().length > 30) {
-      return res.status(400).json({ pesan: "NIP/NIM harus 5-30 karakter." });
-    }
-    if (deskripsi.trim().length < 10 || deskripsi.trim().length > 1000) {
+    if (deskripsi.length < 10 || deskripsi.length > 1000) {
       return res.status(400).json({ pesan: "Deskripsi harus 10-1000 karakter." });
     }
 
-    // b. Kompres foto lalu simpan ke folder uploads
+    // d. Kompres foto lalu simpan ke folder uploads
     const tersimpan = [];
     const hapusFile = () =>
       tersimpan.forEach((t) => fs.unlink(path.join(__dirname, t.path), () => {}));
@@ -111,24 +129,25 @@ app.post("/api/laporan", (req, res) => {
       return res.status(400).json({ pesan: "File foto tidak bisa dibaca." });
     }
 
-    // c. Simpan ke database dalam satu transaksi (berhasil semua atau batal semua)
+    // e. Simpan ke database dalam satu transaksi (berhasil semua atau batal semua)
     const conn = await pool.getConnection();
     try {
       await conn.beginTransaction();
 
       // pelapor: pakai yang sudah ada (cek NIM/NIP) atau buat baru
+      // (nama kolom di database: nip_nim dan no_wa)
       const [cari] = await conn.execute(
-        "SELECT id_pelapor FROM pelapor WHERE nip_nim = ?", [nip_nim.trim()]);
+        "SELECT id_pelapor FROM pelapor WHERE nip_nim = ?", [nip_nim]);
       let idPelapor;
       if (cari.length) {
         idPelapor = cari[0].id_pelapor;
         await conn.execute(
           "UPDATE pelapor SET nama = ?, no_wa = ? WHERE id_pelapor = ?",
-          [nama.trim(), wa, idPelapor]);
+          [nama, wa, idPelapor]);
       } else {
         const [baru] = await conn.execute(
           "INSERT INTO pelapor (nama, nip_nim, no_wa) VALUES (?, ?, ?)",
-          [nama.trim(), nip_nim.trim(), wa]);
+          [nama, nip_nim, wa]);
         idPelapor = baru.insertId;
       }
 
@@ -136,7 +155,7 @@ app.post("/api/laporan", (req, res) => {
       const [lap] = await conn.execute(
         `INSERT INTO laporan (id_pelapor, id_kategori, id_lokasi, deskripsi)
          VALUES (?, ?, ?, ?)`,
-        [idPelapor, id_kategori, id_lokasi, deskripsi.trim()]);
+        [idPelapor, id_kategori, id_lokasi, deskripsi]);
       const idLaporan = lap.insertId;
 
       // kode unik dari id, contoh: FST-R-001
