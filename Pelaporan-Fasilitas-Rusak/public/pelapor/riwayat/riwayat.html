@@ -1,787 +1,357 @@
-Read , lines 1 to 220
-Completed with input: {
-  "path": "/session-state/files/attachments/0bb6629f625c16481116f03acb0cd1f4f19ffd0964652c464a72bd89ee52f70a/file_riwayat.html",
-  "view_range": [
-    1,
-    220
-  ]
-}
-
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Riwayat Laporan | Benerin Donk</title>
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --surface: #ffffff;
-      --surface-2: #eef4ff;
-      --primary: #1d4ed8;
-      --primary-dark: #153ea0;
-      --primary-soft: #eaf1ff;
-      --success: #0f9f6e;
-      --success-soft: #eafaf4;
-      --warning: #f59e0b;
-      --warning-soft: #fff6df;
-      --danger: #dc2626;
-      --danger-soft: #fee2e2;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    * { box-sizing: border-box; }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    />
 
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg, #edf4ff 0%, var(--bg) 100%);
-      color: var(--text);
-    }
+    <!-- Menggunakan stylesheet dashboard untuk komponen yang dipakai bersama. -->
+    <link rel="stylesheet" href="../dashboard.css" />
 
-    .page {
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 28px 18px 50px;
-    }
+    <!-- CSS khusus halaman Lacak Laporan akan dibuat pada tahap berikutnya. -->
+    <link rel="stylesheet" href="riwayat.css" />
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 22px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid rgba(255,255,255,0.8);
-      box-shadow: var(--shadow);
-      border-radius: 18px;
-      backdrop-filter: blur(10px);
-      margin-bottom: 22px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
-
-    .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary), #6ea8ff);
-      color: white;
-      display: grid;
-      place-items: center;
-      font-size: 1.2rem;
-      box-shadow: 0 10px 20px rgba(29, 78, 216, 0.28);
-    }
-
-    .nav-link {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .header-title {
-      margin: 0 0 8px;
-      font-size: clamp(1.8rem, 2vw, 2.5rem);
-      letter-spacing: -0.03em;
-    }
-
-    .subtitle {
-      margin: 0 0 22px;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .search-panel {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 20px 18px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-    }
-
-    .search-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .search-field {
-      position: relative;
-      flex: 1 1 480px;
-    }
-
-    .search-field input {
-      width: 100%;
-      height: 52px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #f9fafb;
-      padding: 0 16px 0 46px;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .search-field input:focus {
-      border-color: rgba(29, 78, 216, 0.7);
-      box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12);
-      background: #fff;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 1.1rem;
-    }
-
-    .btn {
-      border: none;
-      background: var(--primary);
-      color: white;
-      padding: 0 20px;
-      height: 52px;
-      font-weight: 700;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      background: var(--primary-dark);
-    }
-
-    .btn Secondary { background: transparent; } /* harmless if not used */
-
-    .search-meta {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0 18px;
-    }
-
-    .tab {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--text);
-      padding: 12px 18px;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .tab.active {
-      background: var(--primary-soft);
-      border-color: rgba(29, 78, 216, 0.25);
-      color: var(--primary-dark);
-    }
-
-    .content-wrap {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(280px, 0.95fr);
-      gap: 18px;
-      align-items: start;
-    }
-
-    .report-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .report-card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px 18px 14px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
-      cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .report-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(29, 78, 216, 0.4);
-      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
-    }
-
-    .report-card.selected {
-      border-color: rgba(29, 78, 216, 0.8);
-      background: linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
-    }
-
-    .report-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .report-code {
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: var(--primary-dark);
-      font-size: 0.9rem;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 112px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 0.76rem;
-      white-space: nowrap;
-    }
-
-    .status-selesai {
-      background: var(--success-soft);
-      color: var(--success);
-    }
-
-    .status-belum {
-      background: var(--warning-soft);
-      color: #b45309;
-    }
-
-    .report-main {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(150px, 1fr));
-      gap: 10px 18px;
-      margin-bottom: 10px;
-    }
-
-    .report-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .label {
-      color: var(--muted);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 700;
-    }
-
-    .value {
-      font-size: 0.96rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .report-footer {
-      margin-top: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 0.8rem;
-      border-top: 1px solid var(--line);
-      padding-top: 10px;
-    }
-
-    .empty-state {
-      background: var(--surface);
-      border: 1px dashed var(--line);
-      border-radius: 18px;
-      padding: 30px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .detail-panel {
-      position: sticky;
-      top: 18px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-
-    .detail-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .detail-title {
-      margin: 0;
-      font-size: 1.2rem;
-    }
-
-    .detail-code {
-      font-size: 0.8rem;
-      letter-spacing: 0.04em;
-      font-weight: 800;
-      color: var(--primary-dark);
-      background: var(--primary-soft);
-      padding: 8px 10px;
-      border-radius: 10px;
-    }
-
-    .detail-box {
-      background: #f9fafb;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px 14px;
-      margin-top: 10px;
-    }
-
-    .detail-box h4 {
-      margin: 0 0 8px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .detail-box p {
-      margin: 0;
-      line-height: 1.7;
-    }
-
-    .detail-empty {
-      color: var(--muted);
-      font-weight: 600;
-      margin: 10px 0 0;
-    }
-
-    @media (max-width: 850px) {
-      .content-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .detail-panel {
-        position: static;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .report-main {
-        grid-template-columns: 1fr;
-      }
-
-      .search-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .search-field, .btn {
-        width: 100%;
-      }
-    }
-  </style>
+    <link rel="icon" type="image/jpeg" href="../../../logo.jpeg" />
+    <title>Lacak Laporan | Benerin Donk</title>
 </head>
-<body>
-  <div class="page">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark">B</div>
-        <span>Benerin Donk</span>
-      </div>
 
-      <a class="nav-link" href="#">Riwayat Laporan</a>
+<!-- Tema awal mengikuti dashboard Pelapor. -->
+<body class="light">
+
+    <header>
+        <div class="logo">
+            <img src="../../../logo-nobg.png" alt="Logo Benerin Donk" />
+            <span>Benerin<span class="accent"> Donk...</span></span>
+        </div>
+
+        <button
+            class="theme-toggle"
+            id="theme-btn"
+            type="button"
+            aria-label="Ganti tema terang atau gelap"
+        >
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </svg>
+        </button>
     </header>
 
-    <h1 class="header-title">Riwayat Laporan</h1>
-    <p class="subtitle">Semua laporan dari seluruh pelapor dapat dilihat di sini. Pilih satu laporan untuk melihat detailnya, atau cari langsung dengan kode unik.</p>
-
-    <section class="search-panel">
-      <div class="search-row">
-        <div class="search-field">
-          <span class="search-icon">⌕</span>
-          <input
-            id="searchInput"
-            type="text"
-            placeholder="Cari berdasarkan kode unik laporan, misalnya: LPR-2025-021"
-            aria-label="Cari laporan berdasarkan kode unik"
-          />
-        </div>
-        <button id="searchBtn" class="btn" type="button">Cari</button>
-      </div>
-      <div class="search-meta" id="searchMeta">
-        Anda bisa mencari langsung dengan kode unik, atau mengecek satu per satu di daftar laporan.
-      </div>
-    </section>
-
-    <div class="tabs" role="tablist" aria-label="Filter laporan">
-      <button class="tab active" type="button" data-tab="all">Semua Laporan</button>
-      <button class="tab" type="button" data-tab="done">Sudah Selesai</button>
-      <button class="tab" type="button" data-tab="pending">Belum Selesai</button>
+    <div class="navdiv">
+        <nav class="navbar" aria-label="Navigasi Pelapor">
+            <ul>
+                <li>
+                    <a href="../dashboard.html">Home</a>
+                </li>
+                <li>
+                    <a href="riwayat.html" aria-current="page">Lacak Laporan</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
-    <div class="content-wrap">
-      <section id="reportList" class="report-list" aria-live="polite"></section>
+    <main>
+        <!-- JUDUL HALAMAN -->
+        <section class="page-intro" aria-labelledby="judul-halaman">
+            <div class="form-header">
+                <h2 id="judul-halaman">Lacak Laporan Fasilitas</h2>
+                <p>
+                    Lihat laporan kerusakan fasilitas yang telah dikirimkan dan pantau
+                    perkembangan penanganannya.
+                </p>
+            </div>
+        </section>
 
-      <aside id="detailPanel" class="detail-panel" aria-live="polite">
-        <div class="detail-empty">Pilih satu laporan dari daftar untuk melihat detail.</div>
-      </aside>
-    </div>
-  </div>
-
-  <script>
-    const reports = [
-      {
-        code: "LPR-2025-021",
-        name: "Andi Pratama",
-        category: "Jalan Rusak",
-        facility: "Jalan Raya Desa",
-        location: "Jl. Merdeka No. 12, Desa Sukamaju",
-        date: "2025-04-10",
-        status: "Selesai",
-        description: "Lubang besar di tengah jalan mengganggu lalu lintas dan berpotensi membahayakan pengguna motor.",
-        handledBy: "Tim Perbaikan Infrastruktur",
-        progress: "Perbaikan selesai dan area sudah aman digunakan."
-      },
-      {
-        code: "LPR-2025-030",
-        name: "Siti Nurhaliza",
-        category: "Lampu Jalan",
-        facility: "Lampu Penerangan Umum",
-        location: "Jl. Cendana RT 03/RW 02",
-        date: "2025-04-12",
-        status: "Belum Selesai",
-        description: "Lampu jalan mati sejak tiga hari lalu dan membuat lingkungan terasa gelap.",
-        handledBy: "Tim Listrik Desa",
-        progress: "Menunggu ketersediaan material pengganti lampu."
-      },
-      {
-        code: "LPR-2025-045",
-        name: "Dewi Anggraini",
-        category: "Air Bersih",
-        facility: "Pipa Air",
-        location: "Perumahan Seroja Blok B",
-        date: "2025-04-14",
-        status: "Selesai",
-        description: "Pipa utama pecah dan menyebabkan debit air turun drastis di beberapa rumah.",
-        handledBy: "Tim PDAM Kelurahan",
-        progress: "Pipa sudah diganti dan aliran air sudah normal kembali."
-      },
-      {
-        code: "LPR-2025-048",
-        name: "Rizky Maulana",
-        category: "Saluran Air",
-        facility: "Drainase",
-        location: "Kampung Harapan Jaya",
-        date: "2025-04-17",
-        status: "Belum Selesai",
-        description: "Drainase tersumbat akibat sampah dan menimbulkan genangan air saat hujan.",
-        handledBy: "Tim Kebersihan dan Drainase",
-        progress: "Proses pembersihan saluran masih berjalan."
-      },
-      {
-        code: "LPR-2025-056",
-        name: "Nadia Putri",
-        category: "Sekolah",
-        facility: "Bangunan Gedung Sekolah",
-        location: "SMK Negeri 2",
-        date: "2025-04-18",
-        status: "Selesai",
-        description: "Atap bocor pada ruang kelas menyebabkan air masuk saat hujan.",
-        handledBy: "Tim Bangunan Sekolah",
-        progress: "Perbaikan atap dan pengecekan plafon telah selesai."
-      },
-      {
-        code: "LPR-2025-063",
-        name: "Fikri Rahman",
-        category: "Telekomunikasi",
-        facility: "Jaringan Internet",
-        location: "Dusun Tiga, Desa Karangrejo",
-        date: "2025-04-20",
-        status: "Belum Selesai",
-        description: "Jaringan internet di area RT sering terputus dalam beberapa jam terakhir.",
-        handledBy: "Tim IT Desa",
-        progress: "Sedang meninjau titik jaringan dan melakukan pengecekan kabel."
-      },
-      {
-        code: "LPR-2025-071",
-        name: "Maya Sari",
-        category: "Taman",
-        facility: "Jembatan Taman",
-        location: "Taman Kota Blok Timur",
-        date: "2025-04-22",
-        status: "Selesai",
-        description: "Pagar dan sisi jembatan taman retak akibat usia bangunan dan cuaca.",
-        handledBy: "Tim Tata Ruang Kota",
-        progress: "Jembatan sudah diperbaiki dan dibuka kembali untuk umum."
-      },
-      {
-        code: "LPR-2025-079",
-        name: "Hendra Wijaya",
-        category: "Kebersihan",
-        facility: "Tempat Sampah Umum",
-        location: "Pasar Tradisional Sentosa",
-        date: "2025-04-24",
-        status: "Belum Selesai",
-        description: "Tempat sampah umum overflow dan menimbulkan bau tidak sedap di area pasar.",
-        handledBy: "Tim Kebersihan Pasar",
-        progress: "Pemantauan volume sampah masih berlangsung."
-      }
-    ];
-
-    const state = {
-      tab: "all",
-      query: "",
-      selectedCode: null
-    };
-
-    const listEl = document.getElementById("reportList");
-    const detailPanel = document.getElementById("detailPanel");
-    const searchInput = document.getElementById("searchInput");
-    const searchBtn = document.getElementById("searchBtn");
-    const searchMeta = document.getElementById("searchMeta");
-
-    function getStatusClass(status) {
-      return status === "Selesai" ? "status-selesai" : "status-belum";
-    }
-
-    function getFilteredReports() {
-      let filtered = [...reports];
-
-      if (state.tab === "done") {
-        filtered = filtered.filter(r => r.status === "Selesai");
-      } else if (state.tab === "pending") {
-        filtered = filtered.filter(r => r.status === "Belum Selesai");
-      }
-
-      if (state.query.trim()) {
-        const q = state.query.trim().toUpperCase();
-        filtered = filtered.filter(
-          r =>
-            r.code.toUpperCase().includes(q) ||
-            r.name.toUpperCase().includes(q) ||
-            r.facility.toUpperCase().includes(q) ||
-            r.location.toUpperCase().includes(q)
-        );
-      }
-
-      return filtered;
-    }
-
-    function renderDetail(report) {
-      if (!report) {
-        detailPanel.innerHTML = '<div class="detail-empty">Pilih satu laporan dari daftar untuk melihat detail.</div>';
-        return;
-      }
-
-      detailPanel.innerHTML = `
-        <div class="detail-header">
-          <h3 class="detail-title">Detail Laporan</h3>
-          <span class="detail-code">${report.code}</span>
-        </div>
-
-        <div class="detail-box">
-          <h4>Pelapor</h4>
-          <p>${report.name}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Kategori</h4>
-          <p>${report.category}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Nama Fasilitas</h4>
-          <p>${report.facility}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Lokasi</h4>
-          <p>${report.location}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Tanggal Laporan</h4>
-          <p>${report.date}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Status</h4>
-          <p><span class="status-badge ${getStatusClass(report.status)}">${report.status}</span></p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Deskripsi</h4>
-          <p>${report.description}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Penangan</h4>
-          <p>${report.handledBy}</p>
-        </div>
-
-        <div class="detail-box">
-          <h4>Perkembangan Terakhir</h4>
-          <p>${report.progress}</p>
-        </div>
-      `;
-    }
-
-    function renderList() {
-      const filtered = getFilteredReports();
-
-      if (!filtered.length) {
-        listEl.innerHTML = `
-          <div class="empty-state">
-            Tidak ada laporan yang cocok dengan pencarian atau filter saat ini.
-          </div>
-        `;
-        if (state.query.trim()) {
-          detailPanel.innerHTML = '<div class="detail-empty">Kode unik tidak ditemukan. Coba cek kembali atau cari dengan data lain.</div>';
-        } else {
-          renderDetail(null);
-        }
-        return;
-      }
-
-      listEl.innerHTML = filtered.map(report => {
-        const selectedClass = report.code === state.selectedCode ? "selected" : "";
-        return `
-          <article class="report-card ${selectedClass}" data-code="${report.code}" tabindex="0" role="button" aria-label="Lihat laporan ${report.code}">
-            <div class="report-top">
-              <div class="report-code">${report.code}</div>
-              <span class="status-badge ${getStatusClass(report.status)}">${report.status}</span>
+        <!-- PANEL PENCARIAN: Pelapor tetap dapat mencari laporan secara langsung memakai Kode Unik. -->
+        <section class="card" id="panel-pencarian" aria-labelledby="judul-pencarian">
+            <div class="form-header">
+                <h3 id="judul-pencarian">Cari dengan Kode Unik</h3>
+                <p>
+                    Masukkan Kode Unik Laporan yang diperoleh setelah mengirim laporan
+                    untuk langsung membuka detail dan riwayat perkembangannya.
+                </p>
             </div>
 
-            <div class="report-main">
-              <div class="report-item">
-                <span class="label">Pelapor</span>
-                <span class="value">${report.name}</span>
-              </div>
+            <form id="form-cari-laporan" method="get">
+                <div class="field">
+                    <label for="kode-unik-input">Kode Unik Laporan</label>
+                    <input
+                        type="search"
+                        id="kode-unik-input"
+                        name="kode_unik"
+                        class="form-input"
+                        placeholder="Contoh: FST-R-001"
+                        maxlength="50"
+                        autocomplete="off"
+                        autocapitalize="characters"
+                        spellcheck="false"
+                        aria-describedby="petunjuk-kode"
+                        required
+                    />
+                    <small id="petunjuk-kode">
+                        Pencarian ini hanya menggunakan Kode Unik Laporan, bukan NIM/NIP.
+                    </small>
+                </div>
 
-              <div class="report-item">
-                <span class="label">Kategori</span>
-                <span class="value">${report.category}</span>
-              </div>
+                <!-- Pesan error ditampilkan oleh JavaScript jika kode tidak ditemukan. -->
+                <p class="form-error" id="cari-error" role="alert" hidden></p>
 
-              <div class="report-item">
-                <span class="label">Fasilitas</span>
-                <span class="value">${report.facility}</span>
-              </div>
+                <!-- Indikator ditampilkan saat sistem sedang mencari laporan. -->
+                <p id="cari-loading" role="status" aria-live="polite" hidden>
+                    Sedang mencari laporan...
+                </p>
 
-              <div class="report-item">
-                <span class="label">Lokasi</span>
-                <span class="value">${report.location}</span>
-              </div>
+                <button type="submit" class="btn btn-primary" id="cari-btn">
+                    Cari Laporan
+                </button>
+            </form>
+        </section>
+
+        <!-- PANEL DAFTAR PUBLIK: menampilkan laporan dari seluruh pelapor. -->
+        <section class="card" id="panel-daftar-laporan" aria-labelledby="judul-daftar-laporan">
+            <div class="form-header">
+                <h3 id="judul-daftar-laporan">Daftar Laporan Fasilitas</h3>
+                <p>
+                    Telusuri laporan yang masuk. Pilih salah satu laporan untuk melihat
+                    informasi dan riwayat perkembangan penanganannya.
+                </p>
             </div>
 
-            <div class="report-footer">
-              <span>${report.date}</span>
-              <span>Detail</span>
+            <!-- Ringkasan jumlah laporan pada setiap kelompok. Nilai diisi oleh JavaScript. -->
+            <div class="report-summary" aria-label="Ringkasan jumlah laporan">
+                <div class="summary-item">
+                    <span class="summary-label">Belum Selesai</span>
+                    <strong id="jumlah-belum-selesai">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Sudah Selesai</span>
+                    <strong id="jumlah-selesai">-</strong>
+                </div>
             </div>
-          </article>
-        `;
-      }).join("");
 
-      if (!state.selectedCode || !filtered.some(r => r.code === state.selectedCode)) {
-        state.selectedCode = filtered[0].code;
-      }
+            <!-- TAB STATUS LAPORAN -->
+            <div class="report-tabs" role="tablist" aria-label="Filter status laporan">
+                <button
+                    type="button"
+                    class="report-tab active"
+                    id="tab-belum-selesai"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="panel-belum-selesai"
+                    tabindex="0"
+                    data-tab="belum-selesai"
+                >
+                    Belum Selesai
+                    <span class="tab-count" id="jumlah-tab-belum-selesai">-</span>
+                </button>
 
-      const activeReport = reports.find(r => r.code === state.selectedCode);
-      renderDetail(activeReport);
-    }
+                <button
+                    type="button"
+                    class="report-tab"
+                    id="tab-selesai"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-selesai"
+                    tabindex="-1"
+                    data-tab="selesai"
+                >
+                    Sudah Selesai
+                    <span class="tab-count" id="jumlah-tab-selesai">-</span>
+                </button>
+            </div>
 
-    function setTab(tab) {
-      state.tab = tab;
-      document.querySelectorAll(".tab").forEach(button => {
-        button.classList.toggle("active", button.dataset.tab === tab);
-      });
-      renderList();
-    }
+            <!-- TAB 1: status selain Selesai, misalnya Laporan Diterima, Dalam Perbaikan, atau Menunggu Sparepart. -->
+            <section
+                class="report-tab-panel active"
+                id="panel-belum-selesai"
+                role="tabpanel"
+                aria-labelledby="tab-belum-selesai"
+            >
+                <div class="report-list-header">
+                    <h4>Laporan yang Belum Selesai Ditangani</h4>
+                    <p>Berisi laporan yang masih menunggu penanganan atau sedang dalam proses perbaikan.</p>
+                </div>
 
-    searchInput.addEventListener("input", (e) => {
-      const value = e.target.value.trim();
-      state.query = value;
-      if (!value) {
-        searchMeta.textContent = "Anda bisa mencari langsung dengan kode unik, atau mengecek satu per satu di daftar laporan.";
-      } else {
-        searchMeta.textContent = `Pencarian aktif: "${value}"`;
-      }
-      renderList();
-    });
+                <!-- Daftar kartu laporan belum selesai akan dimasukkan oleh JavaScript. -->
+                <div class="report-list" id="daftar-laporan-belum-selesai">
+                    <p class="list-loading" id="loading-belum-selesai" role="status">
+                        Daftar laporan akan ditampilkan setelah data berhasil dimuat.
+                    </p>
+                </div>
 
-    searchBtn.addEventListener("click", () => {
-      const query = searchInput.value.trim().toUpperCase();
-      state.query = query;
+                <p class="empty-state" id="kosong-belum-selesai" role="status" hidden>
+                    Belum ada laporan yang menunggu atau sedang ditangani.
+                </p>
+            </section>
 
-      if (!query) {
-        searchMeta.textContent = "Silakan masukkan kode unik laporan yang ingin dicari.";
-        renderList();
-        return;
-      }
+            <!-- TAB 2: hanya laporan dengan status Selesai. -->
+            <section
+                class="report-tab-panel"
+                id="panel-selesai"
+                role="tabpanel"
+                aria-labelledby="tab-selesai"
+                hidden
+            >
+                <div class="report-list-header">
+                    <h4>Laporan yang Sudah Selesai</h4>
+                    <p>Berisi laporan yang proses perbaikannya telah dinyatakan selesai.</p>
+                </div>
 
-      const found = reports.find(report => report.code.toUpperCase() === query);
+                <!-- Daftar kartu laporan selesai akan dimasukkan oleh JavaScript. -->
+                <div class="report-list" id="daftar-laporan-selesai">
+                    <p class="list-loading" id="loading-selesai" role="status">
+                        Daftar laporan akan ditampilkan setelah data berhasil dimuat.
+                    </p>
+                </div>
 
-      if (found) {
-        state.selectedCode = found.code;
-        if (state.tab !== "all") {
-          state.tab = "all";
-          document.querySelectorAll(".tab").forEach(button => {
-            button.classList.toggle("active", button.dataset.tab === "all");
-          });
-        }
-        searchMeta.textContent = `Laporan ditemukan: ${found.code}`;
-        renderList();
-        const card = document.querySelector(`.report-card[data-code="${found.code}"]`);
-        if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else {
-        searchMeta.textContent = `Kode unik "${query}" tidak ditemukan. Coba cek daftar laporan di bawah atau cari dengan kata kunci lain.`;
-        renderList();
-      }
-    });
+                <p class="empty-state" id="kosong-selesai" role="status" hidden>
+                    Belum ada laporan yang berstatus selesai.
+                </p>
+            </section>
 
-    document.addEventListener("click", (event) => {
-      const card = event.target.closest(".report-card");
-      if (!card) return;
+            <!-- Template kartu yang dipakai untuk setiap laporan pada kedua tab. -->
+            <template id="template-kartu-laporan">
+                <article class="report-card">
+                    <div class="report-card-header">
+                        <div class="report-code">
+                            <span class="detail-label">Kode Laporan</span>
+                            <strong data-field="kode-unik"></strong>
+                        </div>
+                        <span class="status-badge" data-field="status-terkini"></span>
+                    </div>
 
-      state.selectedCode = card.dataset.code;
-      renderList();
-    });
+                    <div class="report-card-body">
+                        <h4 data-field="nama-fasilitas"></h4>
+                        <p class="report-category" data-field="kategori"></p>
+                        <p class="report-location" data-field="lokasi"></p>
+                        <p class="report-date">
+                            Tanggal laporan:
+                            <time data-field="tanggal-lapor"></time>
+                        </p>
+                        <p class="report-description" data-field="deskripsi-singkat"></p>
+                    </div>
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && event.target.matches(".report-card")) {
-        state.selectedCode = event.target.dataset.code;
-        renderList();
-      }
-    });
+                    <div class="report-card-footer">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-action="lihat-detail"
+                        >
+                            Lihat Detail
+                        </button>
+                    </div>
+                </article>
+            </template>
 
-    document.querySelectorAll(".tab").forEach(button => {
-      button.addEventListener("click", () => setTab(button.dataset.tab));
-    });
+            <!-- Template di atas hanya menampilkan informasi laporan yang aman untuk dilihat publik. -->
+            <!-- Jangan masukkan nama pelapor, NIM/NIP, nomor WhatsApp, email, atau data pribadi lainnya ke kartu publik. -->
+        </section>
 
-    setTab("all");
-  </script>
+        <!-- PANEL DETAIL: dipakai baik saat pengguna memilih kartu maupun mencari Kode Unik. -->
+        <section
+            class="card"
+            id="panel-detail-laporan"
+            aria-labelledby="judul-detail-laporan"
+            aria-live="polite"
+            hidden
+        >
+            <div class="form-header">
+                <h3 id="judul-detail-laporan">Detail Laporan</h3>
+                <p>Informasi laporan dan riwayat perkembangan penanganannya.</p>
+            </div>
+
+            <div class="report-overview">
+                <div class="report-code">
+                    <span class="detail-label">Kode Unik Laporan</span>
+                    <p class="kode-laporan" id="hasil-kode-unik">-</p>
+                </div>
+
+                <div class="report-current-status">
+                    <span class="detail-label">Status Saat Ini</span>
+                    <span class="status-badge" id="status-terkini">-</span>
+                </div>
+            </div>
+
+            <div class="login-subheader">
+                <h4>Informasi Laporan</h4>
+            </div>
+
+            <dl class="report-details">
+                <div class="detail-item">
+                    <dt>Kategori Fasilitas</dt>
+                    <dd id="hasil-kategori">-</dd>
+                </div>
+
+                <div class="detail-item">
+                    <dt>Nama Fasilitas</dt>
+                    <dd id="hasil-fasilitas">-</dd>
+                </div>
+
+                <div class="detail-item">
+                    <dt>Lokasi</dt>
+                    <dd id="hasil-lokasi">-</dd>
+                </div>
+
+                <div class="detail-item">
+                    <dt>Tanggal Laporan</dt>
+                    <dd id="hasil-tanggal">-</dd>
+                </div>
+
+                <div class="detail-item detail-description">
+                    <dt>Deskripsi Kerusakan</dt>
+                    <dd id="hasil-deskripsi">-</dd>
+                </div>
+            </dl>
+
+            <div class="login-subheader">
+                <h4>Riwayat Perkembangan</h4>
+            </div>
+
+            <p class="timeline-description">
+                Riwayat ini menunjukkan perubahan status yang tercatat sejak laporan diterima.
+            </p>
+
+            <!-- JavaScript akan mengisi timeline dari entitas Riwayat_Status. -->
+            <ol class="timeline" id="timeline-status" aria-label="Riwayat perubahan status"></ol>
+
+            <p id="timeline-kosong" role="status" hidden>
+                Belum ada catatan perkembangan untuk laporan ini.
+            </p>
+
+            <!-- Template satu item timeline yang akan digandakan oleh JavaScript. -->
+            <template id="template-item-status">
+                <li class="timeline-item">
+                    <span class="timeline-marker" aria-hidden="true"></span>
+                    <div class="timeline-content">
+                        <div class="timeline-heading">
+                            <h5 data-field="status"></h5>
+                            <time data-field="waktu-update"></time>
+                        </div>
+                        <p data-field="catatan"></p>
+                    </div>
+                </li>
+            </template>
+
+            <button type="button" class="btn" id="kembali-ke-daftar-btn">
+                Kembali ke Daftar Laporan
+            </button>
+        </section>
+    </main>
+
+    <footer>
+        &copy; <span id="year"></span> Benerin Donk
+    </footer>
+
+    <!-- JavaScript akan menangani tab, pemuatan daftar, pencarian kode, detail, timeline, dan tema. -->
+    <script src="riwayat.js" defer></script>
 </body>
 </html>
-```
